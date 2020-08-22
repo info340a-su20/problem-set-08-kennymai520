@@ -12,7 +12,7 @@ export class App extends Component {
     return (
       <div className='container'>
         <h1>US Senators 2019</h1>
-        <SenatorTable cols={['Name', 'State', 'Phone', 'Twitter']} senatorList={this.props.senators} />
+        <SenatorTable senators={this.props.senators} />
       </div>
     );
   }
@@ -20,14 +20,13 @@ export class App extends Component {
 
 export class SenatorTable extends Component {
   render() {
-    let senatorItem = this.props.senatorList.map((item) => {
-      let component = <SenatorRow key={item.name} senator={item} />;
-      return component;
-    })
+    let senatorItem = this.props.senators.map((item) => 
+      <SenatorRow key={item.id} senator={item} />
+    )
 
     return (
-      <table className='table table-bordered'>
-        <TableHeader cols={this.props.cols} />
+      <table className={'table table-bordered'}>
+        <TableHeader cols={['Name', 'State', 'Phone', 'Twitter']} />
         <tbody>
           {senatorItem}
         </tbody>
@@ -56,17 +55,16 @@ export class TableHeader extends Component {
 //expects a props senator
 export class SenatorRow extends Component {
   render() {
-    let phoneLink = 'tel: ' + this.props.senator.phone;
+    let phoneLink = 'tel:' + this.props.senator.phone;
     let twitterLink = 'https://twitter.com/' + this.props.senator.twitter;
+    let state = this.props.senator.party.substring(0,1) + " - " + this.props.senator.state;
     return(
       <tr>
         <td>{this.props.senator.name}</td>
-        <td>{this.props.senator.state}</td>
+        <td>{state}</td>
         <td><a href={phoneLink}>{this.props.senator.phone}</a></td>
         <td><a href={twitterLink}>{'@' + this.props.senator.twitter}</a></td>
       </tr>
-    );
-
+    )
   }
-
 }
